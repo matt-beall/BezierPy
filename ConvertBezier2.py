@@ -8,11 +8,11 @@ import matplotlib.path as path
 import matplotlib.animation as animation
 from math import pi, sin, cos, sqrt
 
-def point_dist(p1, p2):
-    distX = p2[0] - p1[0]
-    distY = p2[1] - p1[1]
-    dist = sqrt(distX*distX + distY*distY)
-    return dist
+# def point_dist(p1, p2):
+#     distX = p2[0] - p1[0]
+#     distY = p2[1] - p1[1]
+#     dist = sqrt(distX*distX + distY*distY)
+#     return dist
 
 def plotBezier(bezierPoints, minX, minY, maxX, maxY, pointsStyle):
 

@@ -43,14 +43,34 @@ def main():
     # y4 = 0.0
 
 
-    x1 = 0.0
-    y1 = 36.0981
-    x2 = 0.0
-    y2 = 16.0874
-    x3 = 16.2695
-    y3 = 0.0
-    x4 = 36.0933
-    y4 = 0.0
+    x1 = 1.5
+    y1 = 0.5
+
+    x2 = 3.1
+    y2 = 1215.0
+    x3 = 575.0
+    y3 = 3075.0
+    x4 = 827.0
+    y4 = 1.5
+
+    # x1 = 0.0
+    # y1 = 36.0981
+    # x2 = 0.0
+    # y2 = 16.0874
+    # x3 = 16.2695
+    # y3 = 0.0
+    # x4 = 36.0933
+    # y4 = 0.0
+
+    x1 = x1 / 72.0
+    y1 = y1 / 72.0
+    x2 = x2 / 72.0
+    y2 = y2 / 72.0
+    x3 = x3 / 72.0
+    y3 = y3 / 72.0
+    x4 = x4 / 72.0
+    y4 = y4 / 72.0
+
 
     bezPoints = [[x1, y1],
                     [x2, y2],
@@ -71,50 +91,67 @@ def main():
 
     plotBezier(bezPoints, minX, minY, maxX, maxY, 'rs')
 
-    # plt.show()
+    bezPoints2 = bezPoints
+    bezPoints3 = bezPoints
+
+#    [bezPoints2, bezPoints3] = bezierBasisSplit(bezPoints, basis)
+
+    bezLeft = bezPoints
+    bezRight = bezPoints
+
+    bisectPoints = []
+    newP = [0,0]
+
+    nodeDist = getBezierNodeDistance(bezLeft)
+    integrateDist = integrateBezier(bezLeft)
+    print("Init: ", nodeDist, "    ", integrateDist)
+
+    print("Start from left")
+    i = 0
+    while nodeDist > 0.033:
+        newP = getBezierPoint(bezLeft, 0.5)
+        bisectPoints.append(newP)
+        [bezLeft, bezRight] = bezierBasisSplit(bezLeft, 0.5)
+        nodeDist = getBezierNodeDistance(bezLeft)
+        integrateDist = integrateBezier(bezLeft)
+        i += 1
+        print(i, nodeDist,"    ", integrateDist)
 
 
-    # plt.figure()
 
+    bisectX = np.array([p[0] for p in bisectPoints])
+    bisectY = np.array([p[1] for p in bisectPoints])
 
-    basis = 0.75
+    print("Start from right")
 
-    x12 = x1 + (x2 - x1)*basis
-    y12 = y1 + (y2 - y1)*basis
-    x23 = x2 + (x3 - x2)*basis
-    y23 = y2 + (y3 - y2)*basis
-    x34 = x3 + (x4 - x3)*basis
-    y34 = y3 + (y4 - y3)*basis
-    x123 = x12 + (x23 - x12)*basis
-    y123 = y12 + (y23 - y12)*basis
-    x234 = x23 + (x34 - x23)*basis
-    y234 = y23 + (y34 - y23)*basis
-    x1234 = x123 + (x234 - x123)*basis
-    y1234 = y123 + (y234 - y123)*basis
+    bezLeft = bezPoints
+    bezRight = bezPoints
 
+    bisectPoints2 = []
 
-    bezPoints2 = [[x1, y1],
-                 [x12, y12],
-                 [x123, y123],
-                 [x1234, y1234]]
+    nodeDist = getBezierNodeDistance(bezRight)
+    integrateDist = integrateBezier(bezRight)
+    i = 0
+    while nodeDist > 0.033:
+        newP = getBezierPoint(bezRight, 0.5)
+        bisectPoints2.append(newP)
+        [bezLeft, bezRight] = bezierBasisSplit(bezRight, 0.5)
+        nodeDist = getBezierNodeDistance(bezRight)
+        integrateDist = integrateBezier(bezRight)
+        i += 1
+        print(i, nodeDist,"    ", integrateDist)
 
-    bezPoints3 = [[x1234, y1234],
-                  [x234, y234],
-                  [x34, y34],
-                  [x4, y4]]
+    bisectX2 = np.array([p[0] for p in bisectPoints2])
+    bisectY2 = np.array([p[1] for p in bisectPoints2])
 
-    print(x1) 
-    print(y1)
-    print(x12) 
-    print(y12)
-    print(x123) 
-    print(y123)
-    print(x1234) 
-    print(y1234)
+    plt.plot(bisectX,bisectY, 'go')
+    plt.plot(bisectX2, bisectY2, 'mo')
+    # print(integrateBezier(bezPoints))
+    # print(integrateBezier(bezPoints2))
+    # print(integrateBezier(bezPoints3))
 
-
-    plotBezier(bezPoints2, minX, minY, maxX, maxY, 'go')
-    plotBezier(bezPoints3, minX, minY, maxX, maxY, 'go')
+    # plotBezier(bezPoints2, minX, minY, maxX, maxY, 'go')
+    # plotBezier(bezPoints3, minX, minY, maxX, maxY, 'go')
 
     plt.show()
 
