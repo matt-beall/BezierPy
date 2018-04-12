@@ -104,7 +104,7 @@ def main():
 
     nodeDist = getBezierNodeDistance(bezLeft)
     integrateDist = integrateBezier(bezLeft)
-    print("Init: ", nodeDist, "    ", integrateDist)
+    print("Init: ", "%02.3f" % nodeDist, "    ", "%02.3f" % integrateDist)
 
     print("Start from left")
     i = 0
@@ -115,7 +115,7 @@ def main():
         nodeDist = getBezierNodeDistance(bezLeft)
         integrateDist = integrateBezier(bezLeft)
         i += 1
-        print(i, nodeDist,"    ", integrateDist)
+        print(i, "%02.3f" % nodeDist, "    ", "%02.3f" % integrateDist)
 
 
 
@@ -139,13 +139,13 @@ def main():
         nodeDist = getBezierNodeDistance(bezRight)
         integrateDist = integrateBezier(bezRight)
         i += 1
-        print(i, nodeDist,"    ", integrateDist)
+        print(i, "%02.3f" % nodeDist, "    ", "%02.3f" % integrateDist)
 
     bisectX2 = np.array([p[0] for p in bisectPoints2])
     bisectY2 = np.array([p[1] for p in bisectPoints2])
 
     plt.plot(bisectX,bisectY, 'go')
-    plt.plot(bisectX2, bisectY2, 'mo')
+    plt.plot(bisectX2, bisectY2, 'm*')
     # print(integrateBezier(bezPoints))
     # print(integrateBezier(bezPoints2))
     # print(integrateBezier(bezPoints3))
